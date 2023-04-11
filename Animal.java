@@ -1,6 +1,7 @@
 import java.util.*;
 
-public abstract class Animal {
+
+public abstract class Animal implements CoutEvaluable {
   private String name;
   private Animal pere;
   private Animal mere;
@@ -29,6 +30,7 @@ public abstract class Animal {
 		//this.pere = new Animal(pere.getName(), pere.getPoids(), null); // Il faut créer un nouvel objet de type animal
     this.pere = pere;
 		this.mere = mere;
+    this.regime = pere.getRegime();
 		this.enfants = new LinkedList<Animal>();
 		if (pere != null) {
 			pere.ajouterEnfant(this);
@@ -81,6 +83,10 @@ public abstract class Animal {
   }
   public double getCout() {
     return regime.getCout();
+  }
+
+  public Regime getRegime() {
+    return regime;
   }
 
   // Le cri est spécifique à chaque type (chaque classe) d'animal.

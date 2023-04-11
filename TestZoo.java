@@ -1,8 +1,10 @@
+import java.util.*;
+
 
 public class TestZoo {
 	public static void main(String[] args) {
 		Zoo Manotec = new Zoo("Manotec");
-		Aigle Fantome = new Aigle("Fantome", 120, 12);
+		Aigle Fantome = new Aigle("Fantome", 120, 12, 5);
 		Aigle Fantomette = new Aigle("Fantomette", 100, 20, 4);
 		Manotec.ajoute(Fantome);
 		Manotec.ajoute(Fantomette);
@@ -16,10 +18,25 @@ public class TestZoo {
 		Orque Paul = new Orque("Paul", 8000);
 		Manotec.ajoute(Paul);
 
+		System.out.println("Animaux triés par coût :");
+		TreeSet<Animal> animauxTriesParCout = Manotec.getAnimauxTriesParCout();
+		for (Animal animal : animauxTriesParCout) {
+			System.out.println(animal.getName() + " - Coût: " + animal.getCout());
+		}
+
+		Employe employe1 = new Employe("Jean", 100);
+    	Employe employe2 = new Employe("Marie", 120);
+    	Manotec.ajouteEmploye(employe1);
+    	Manotec.ajouteEmploye(employe2);
+
+    	System.out.println("Le coût total du zoo est de " + Manotec.getCout());
+
 		System.out.println(Fantome.getName() + " a " + Fantome.getNbDescendants() + " descendants");
 		System.out.println(Paul.getName() + " a " + Paul.getNbDescendants() + " descendants");
 
-/*
+		System.out.println("le cout total du zoo est de " + Manotec.getCout());
+
+/* 
 		System.out.println(minatec);
 		System.out.println("Le minatec coute " + minatec.coutTotal() + " Euros/jour");
 

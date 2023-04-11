@@ -1,5 +1,19 @@
 import java.util.*;
 
+class AnimalCoutComparator implements Comparator<Animal> {
+    @Override
+    public int compare(Animal a1, Animal a2) {
+        if (a1.getCout() < a2.getCout()) {
+            return -1;
+        } else if (a1.getCout() > a2.getCout()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
+
+
 // Le zoo
 //    avec seulement une LinkedList
 // A finaliser de telle sorte que :
@@ -26,6 +40,8 @@ public class Zoo {
 
 	// Liste d'animaux ( affichage dans l'ordre d'ajout au Zoo => List)
 	private List<Animal> animaux;
+	private double coutTotal; // Amélioration de getcout : Ajout de l'attribut coutTotal
+	private List<CoutEvaluable> coutEvaluables;
 
 	/** Construit le zoo de nom name, initialement vide */
 	public Zoo(String name) {
@@ -36,6 +52,8 @@ public class Zoo {
 	  // car on utilisera pas la méthode get(int)
 	  // et l'ajout dans une LinkedList est toujours en O(1)
 		animaux = new LinkedList<Animal>();
+		coutTotal = 0; // Amélioration de getcout : Initialisation de l'attribut coutTotal
+		coutEvaluables = new LinkedList<>();
 	}
 
 	/** Ajoute l'animal a au zoo apres avoir vérifié qu'il n'y a pas dejà un animal de même nom */
@@ -55,6 +73,8 @@ public class Zoo {
 		// A faire pour la prochaine séance
 
 		animaux.add(a);
+		coutTotal += a.getCout(); // Amélioration de getcout : Mettre à jour le coût total lors de l'ajout d'un animal
+		coutEvaluables.add(a);
 	}
 
 	/** Retourne le nombre d'animaux contenu dans le zoo */
@@ -88,19 +108,26 @@ public class Zoo {
 			Animal a = itr.next();
 			if(a.getName().equals(nom)){
 				itr.remove(); // O(1) sur une LinkedList<>
+				coutTotal -= a.getCout(); // Amélioration de getcout : Mettre à jour le coût total lors de la suppression d'un animal
 				return;
 			}
 		}
 	}
 
-	/** Retourne le cout total du zoo par jour (cout de nourriture) */
-	public double coutTotal() {
-		double cout = 0;
-		// coût O(n), on ne peut aps faire mieux
-		for(Animal a : animaux) {
-			cout += a.getCout();
-		}
-		return cout;
+	public void ajouteEmploye(Employe e) {
+		coutEvaluables.add(e);
+		coutTotal += e.getCout(); // Mettre à jour le coût total lors de l'ajout d'un employé
+	}
+	
+
+	public double getCout() {
+		return coutTotal;
+	}
+	
+	public TreeSet<Animal> getAnimauxTriesParCout() {
+		TreeSet<Animal> animauxTries = new TreeSet<>(new AnimalCoutComparator());
+		animauxTries.addAll(animaux);
+		return animauxTries;
 	}
 
 	/** Retourne une chaine de caractères représentant l'état du zoo et de tous ces animaux */
